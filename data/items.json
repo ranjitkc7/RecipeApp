@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Momos",
+    "price": 50,
+    "image": "momos"
+  },
+  {
+    "name": "Samosa",
+    "price": 40,
+    "image": "samosa"
+  },
+   {
+    "name" : "Sel-roti",
+    "price" : 50,
+    "image" : "sel"
+ }
+]
