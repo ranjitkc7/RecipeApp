@@ -15,13 +15,16 @@ import { StatusBar } from "expo-status-bar";
 import axios from "axios";
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons";
 import CategoriesPage from "../components/CategoriesPage";
+import RecipesPage from "../components/RecipesPage";
 
 const DataPage = () => {
-  const [activity, setActivity] = useState(Boolean);
+  const [activity, setActivity] = useState("Beef");
   const [dataCategory, setDataCategory] = useState([]);
+  const [dataRecipe, setDataRecipe] = useState([]);
 
   useEffect(() => {
     getCategory();
+    getRecipe();
   })
   const getCategory = async () => {
     try {
@@ -35,6 +38,18 @@ const DataPage = () => {
       console.log(err);
     }
   }
+  const getRecipe = async (category = "Beef") => {
+    try {
+      const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+      const data = response.data.meals;
+      if (data) {
+        setDataRecipe(data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <View className="p-[8px] flex-1">
       <StatusBar style="dark" />
@@ -89,6 +104,12 @@ const DataPage = () => {
               activity={activity}
               setActivity={setActivity} />
           }
+        </View>
+        <View>
+          <RecipesPage
+            dataCategory={dataCategory}
+            dataRecipe={dataRecipe}
+          />
         </View>
       </ScrollView>
     </View>
