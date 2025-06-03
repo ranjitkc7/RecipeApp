@@ -4,18 +4,20 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import dataItems from "../data/items.json";
+// import dataItems from "../data/items.json";
 import '../global.css';
+import Animated, { FadeInDown } from "react-native-reanimated";
+// const imageMap = {
+//   momos: require('../assets/images/momo.jpg'),
+//   samosa: require('../assets/images/somosa.jpg'),
+//   sel: require('../assets/images/sel.jpeg'),
+// };
 
-const imageMap = {
-  momos: require('../assets/images/momo.jpg'),
-  samosa: require('../assets/images/somosa.jpg'),
-  sel: require('../assets/images/sel.jpeg'),
-};
-
-const CategoriesPage = () => {
+const CategoriesPage = ({ dataCategory, activity, setActivity }) => {
   return (
-    <View className="mt-[10px]">
+    <Animated.View
+      entering={FadeInDown.duration(500).springify()}
+      className="mt-[10px]">
       <Text className="font-[600]" style={{ fontSize: hp(2.5) }}>
         Categories :
       </Text>
@@ -25,26 +27,32 @@ const CategoriesPage = () => {
         contentContainerStyle={{ paddingHorizontal: wp(2) }}
         className="mt-[10px] flex-1 w-full flex-row"
       >
-        {dataItems.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            className="flex items-center space-y-1"
-            style={{ marginRight: wp(3) }}
-          >
-            <View className="rounded-full items-center justify-center flex bg-white">
-              <Image
-                source={imageMap[item.image]}
-                style={{ height: hp(8), width: hp(8) }}
-                className="rounded-full"
-              />
+        {dataCategory.map((item, index) => {
+          let isActive = activity === item.strCategory;
+          let color = isActive ? "bg-[#8338ec]" : "bg-black/10";
+          return (
+            <TouchableOpacity
+              onPress={() => setActivity(item.strCategory)}
+              key={index}
+              className="flex items-center space-y-1"
+              style={{ marginRight: wp(3) }}
+            >
+              <View className={"rounded-[50%] p-[2px] flex items-center justify-center " + color}
+               style={{ width: hp(9), height: hp(9) }}>
+                <Image
+                  source={{ uri: item.strCategoryThumb }}
+                  style={{ height: hp(8), width: hp(8) }}
+                  className="rounded-full"
+                />
+              </View>
               <Text>
-                <Text className="font-[600]">{item.name}</Text>
+                <Text className="font-[600] ml-[1px]">{item.strCategory}</Text>
               </Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+            </TouchableOpacity>
+          )
+        })}
       </ScrollView>
-    </View>
+    </Animated.View>
   );
 };
 

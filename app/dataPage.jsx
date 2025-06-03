@@ -6,16 +6,35 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { StatusBar } from "expo-status-bar";
+import axios from "axios";
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons";
 import CategoriesPage from "../components/CategoriesPage";
 
 const DataPage = () => {
+  const [activity, setActivity] = useState(Boolean);
+  const [dataCategory, setDataCategory] = useState([]);
+
+  useEffect(() => {
+    getCategory();
+  })
+  const getCategory = async () => {
+    try {
+      const response = await axios.get("https://www.themealdb.com/api/json/v1/1/categories.php");
+      const data = response.data.categories;
+      //  console.log(data);
+      if (data) {
+        setDataCategory(data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <View className="p-[8px] flex-1">
       <StatusBar style="dark" />
@@ -63,8 +82,14 @@ const DataPage = () => {
             <FontAwesome name="search" size={24} color="black" />
           </TouchableOpacity>
         </View>
-
-        <CategoriesPage />
+        <View>
+          {
+            dataCategory.length > 0 && <CategoriesPage
+              dataCategory={dataCategory}
+              activity={activity}
+              setActivity={setActivity} />
+          }
+        </View>
       </ScrollView>
     </View>
   );
