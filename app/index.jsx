@@ -27,7 +27,7 @@ const HomePage = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             router.push("/dataPage");
-        }, 4000);
+        }, 3000);
         return () => clearTimeout(timer);
     }, [router]);
 

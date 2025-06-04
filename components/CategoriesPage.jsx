@@ -13,7 +13,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 //   sel: require('../assets/images/sel.jpeg'),
 // };
 
-const CategoriesPage = ({ dataCategory, activity, setActivity }) => {
+const CategoriesPage = ({ dataCategory, activity, handleChangeCategory }) => {
   return (
     <Animated.View
       entering={FadeInDown.duration(500).springify()}
@@ -32,13 +32,13 @@ const CategoriesPage = ({ dataCategory, activity, setActivity }) => {
           let color = isActive ? "bg-[#8338ec]" : "bg-black/10";
           return (
             <TouchableOpacity
-              onPress={() => setActivity(item.strCategory)}
+              onPress={() => handleChangeCategory(item.strCategory)}
               key={index}
               className="flex items-center space-y-1"
               style={{ marginRight: wp(3) }}
             >
               <View className={"rounded-[50%] p-[2px] flex items-center justify-center " + color}
-               style={{ width: hp(9), height: hp(9) }}>
+                style={{ width: hp(9), height: hp(9) }}>
                 <Image
                   source={{ uri: item.strCategoryThumb }}
                   style={{ height: hp(8), width: hp(8) }}

@@ -21,11 +21,32 @@ const DataPage = () => {
   const [activity, setActivity] = useState("Beef");
   const [dataCategory, setDataCategory] = useState([]);
   const [dataRecipe, setDataRecipe] = useState([]);
+  const [searchItem, setSearchItem] = useState("");
+  const [filteredRecipe, setFilteredRecipe] = useState([]);
 
   useEffect(() => {
     getCategory();
-    getRecipe();
-  })
+  }, []);
+
+  useEffect(() => {
+    setDataRecipe([]);
+    getRecipe(activity);
+  }, [activity]);
+
+  useEffect(() => {
+    if (searchItem.trim() === "") {
+      setFilteredRecipe(dataRecipe);
+    } else {
+      const filtered = dataRecipe.filter((item) => {
+       return item.strMeal.toLowerCase().includes(searchItem.toLowerCase());
+      })
+      setFilteredRecipe(filtered);
+    }
+  }, [dataRecipe, searchItem]);
+  const handleChangeCategory = (category) => {
+    setActivity(category);
+    setSearchItem()
+  }
   const getCategory = async () => {
     try {
       const response = await axios.get("https://www.themealdb.com/api/json/v1/1/categories.php");
@@ -85,6 +106,8 @@ const DataPage = () => {
             className="mt-[10px] bg-[#f2f2f2] rounded-[13px] p-[10px] py-[5px]
             items-center justify-center w-full"
             placeholder="Search"
+            value={searchItem}
+            onChangeText={(text) => setSearchItem(text)}
             placeholderTextColor={"#808080"}
             style={{ fontSize: hp(2.1), height: hp(6) }}
           />
@@ -102,13 +125,13 @@ const DataPage = () => {
             dataCategory.length > 0 && <CategoriesPage
               dataCategory={dataCategory}
               activity={activity}
-              setActivity={setActivity} />
+              handleChangeCategory={handleChangeCategory} />
           }
         </View>
         <View>
           <RecipesPage
             dataCategory={dataCategory}
-            dataRecipe={dataRecipe}
+            dataRecipe={filteredRecipe}
           />
         </View>
       </ScrollView>
