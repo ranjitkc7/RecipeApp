@@ -5,7 +5,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 // import dataItems from "../data/items.json";
-import '../global.css';
+import '../../global.css';
 import Animated, { FadeInDown } from "react-native-reanimated";
 // const imageMap = {
 //   momos: require('../assets/images/momo.jpg'),

@@ -14,8 +14,9 @@ import {
 import { StatusBar } from "expo-status-bar";
 import axios from "axios";
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons";
-import CategoriesPage from "../components/CategoriesPage";
-import RecipesPage from "../components/RecipesPage";
+import CategoriesPage from "./components/CategoriesPage";
+import RecipesPage from "./components/RecipesPage";
+import { useRouter } from "expo-router";
 
 const DataPage = () => {
   const [activity, setActivity] = useState("Beef");
@@ -24,6 +25,7 @@ const DataPage = () => {
   const [searchItem, setSearchItem] = useState("");
   const [filteredRecipe, setFilteredRecipe] = useState([]);
 
+  const router = useRouter();
   useEffect(() => {
     getCategory();
   }, []);
@@ -45,7 +47,7 @@ const DataPage = () => {
   }, [dataRecipe, searchItem]);
   const handleChangeCategory = (category) => {
     setActivity(category);
-    setSearchItem()
+    setSearchItem(" ");
   }
   const getCategory = async () => {
     try {

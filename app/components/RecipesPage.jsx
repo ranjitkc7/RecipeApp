@@ -7,11 +7,13 @@ import {
 import MasonryList from '@react-native-seoul/masonry-list';
 import Animated, { FadeInDown } from "react-native-reanimated";
 import LoaderFile from "./LoaderFile";
+import { useRouter } from "expo-router";
 
 const RecipesPage = ({ dataRecipe, dataCategory }) => {
+    const router = useRouter();
     const renderItem = ({ item, index }) => {
         const isEven = index % 2 === 0;
-        const imageHeight = index % 3 === 0 ? hp(20) : hp(35); 
+        const imageHeight = index % 3 === 0 ? hp(20) : hp(35);
 
         return (
             <Animated.View
@@ -23,7 +25,12 @@ const RecipesPage = ({ dataRecipe, dataCategory }) => {
                 }}
             >
                 <View style={{ height: imageHeight + hp(4) }}>
-                    <TouchableOpacity activeOpacity={0.8}>
+                    <TouchableOpacity
+                        onPress={() => router.push({
+                            pathname: "/RecipeDetails"
+                            , params: { id: item.idMeal, name: item.strMeal, image: item.strMealThumb }
+                        })}
+                        activeOpacity={0.8}>
                         <Image
                             style={{
                                 width: "100%",
@@ -66,7 +73,7 @@ const RecipesPage = ({ dataRecipe, dataCategory }) => {
             </Text>
             <View>
                 {(dataCategory.length === 0 || dataRecipe.length === 0) ? (
-                    <LoaderFile  size="large" className="mt-20"/>
+                    <LoaderFile size="large" className="mt-20" />
                 ) : (
                     <MasonryList
                         data={dataRecipe}
